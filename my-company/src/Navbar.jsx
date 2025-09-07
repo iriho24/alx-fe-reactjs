@@ -1,72 +1,13 @@
-import { NavLink } from 'react-router-dom';
-
-const linkStyle = {
-  textDecoration: 'none',
-  marginRight: '16px',
-  padding: '8px 12px',
-  borderRadius: '6px'
-};
+// src/Navbar.jsx
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        padding: '12px 20px',
-        background: '#0d47a1',
-        color: 'white',
-        position: 'sticky',
-        top: 0
-      }}
-    >
-      <div style={{ fontWeight: 700, marginRight: '20px' }}>My Company</div>
-
-      <NavLink
-        to="/"
-        style={({ isActive }) => ({
-          ...linkStyle,
-          color: isActive ? '#0d47a1' : 'white',
-          background: isActive ? 'white' : 'transparent'
-        })}
-        end
-      >
-        Home
-      </NavLink>
-
-      <NavLink
-        to="/about"
-        style={({ isActive }) => ({
-          ...linkStyle,
-          color: isActive ? '#0d47a1' : 'white',
-          background: isActive ? 'white' : 'transparent'
-        })}
-      >
-        About
-      </NavLink>
-
-      <NavLink
-        to="/services"
-        style={({ isActive }) => ({
-          ...linkStyle,
-          color: isActive ? '#0d47a1' : 'white',
-          background: isActive ? 'white' : 'transparent'
-        })}
-      >
-        Services
-      </NavLink>
-
-      <NavLink
-        to="/contact"
-        style={({ isActive }) => ({
-          ...linkStyle,
-          color: isActive ? '#0d47a1' : 'white',
-          background: isActive ? 'white' : 'transparent'
-        })}
-      >
-        Contact
-      </NavLink>
+    <nav style={{ padding: "10px", backgroundColor: "#333", color: "#fff" }}>
+      <Link to="/" style={{ margin: "0 10px", color: "#fff" }}>Home</Link>
+      <Link to="/about" style={{ margin: "0 10px", color: "#fff" }}>About</Link>
+      <Link to="/services" style={{ margin: "0 10px", color: "#fff" }}>Services</Link>
+      <Link to="/contact" style={{ margin: "0 10px", color: "#fff" }}>Contact</Link>
     </nav>
   );
 }
