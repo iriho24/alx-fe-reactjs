@@ -1,10 +1,11 @@
 // src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "./components/Navbar"; // updated import
 import Home from "./Home";
 import About from "./About";
 import Services from "./Services";
 import Contact from "./Contact";
+import Footer from "./Footer"; // optional
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/services" element={<Services />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+      <Footer /> {/* optional, if you want it on all pages */}
     </Router>
   );
 }
