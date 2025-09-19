@@ -5,10 +5,10 @@ export const useRecipeStore = create((set) => ({
   favorites: [],
   recommendations: [],
 
-  // Replace all recipes
+  // ✅ Explicitly add setRecipes
   setRecipes: (recipes) => set({ recipes }),
 
-  // Add recipe
+  // Add a new recipe
   addRecipe: (newRecipe) =>
     set((state) => ({ recipes: [...state.recipes, newRecipe] })),
 
@@ -17,13 +17,13 @@ export const useRecipeStore = create((set) => ({
     set((state) => ({
       favorites: [...new Set([...state.favorites, recipeId])]
     })),
-    
+
   removeFavorite: (recipeId) =>
     set((state) => ({
       favorites: state.favorites.filter((id) => id !== recipeId)
     })),
 
-  // Generate recommendations (mock based on favorites)
+  // Generate recommendations (mock)
   generateRecommendations: () =>
     set((state) => {
       const recommended = state.recipes.filter(
