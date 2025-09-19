@@ -5,6 +5,9 @@ export const useRecipeStore = create((set) => ({
   favorites: [],
   recommendations: [],
 
+  // Replace all recipes
+  setRecipes: (recipes) => set({ recipes }),
+
   // Add recipe
   addRecipe: (newRecipe) =>
     set((state) => ({ recipes: [...state.recipes, newRecipe] })),
@@ -14,6 +17,7 @@ export const useRecipeStore = create((set) => ({
     set((state) => ({
       favorites: [...new Set([...state.favorites, recipeId])]
     })),
+    
   removeFavorite: (recipeId) =>
     set((state) => ({
       favorites: state.favorites.filter((id) => id !== recipeId)
