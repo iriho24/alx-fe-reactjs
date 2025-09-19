@@ -5,19 +5,19 @@ const Search = () => {
   const [username, setUsername] = useState("");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError(false);
     setUserData(null);
 
     try {
       const data = await fetchUserData(username);
       setUserData(data);
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -36,12 +36,22 @@ const Search = () => {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p>Looks like we cant find the user</p>}
+
       {userData && (
-        <div>
-          <img src={userData.avatar_url} alt={userData.login} width={100} />
+        <div data-testid="user-card">
+          <img
+            src={userData.avatar_url}
+            alt={userData.login}
+            width={100}
+            data-testid="avatar"
+          />
           <h3>{userData.name || userData.login}</h3>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
+          <a
+            href={userData.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Visit GitHub Profile
           </a>
         </div>
