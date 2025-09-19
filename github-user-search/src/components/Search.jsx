@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { fetchAdvancedUsers } from "../services/githubService";
+import { fetchUserData, fetchAdvancedUsers } from "../services/githubService";
 
 const Search = () => {
   const [username, setUsername] = useState("");
@@ -19,9 +19,18 @@ const Search = () => {
     setPage(1);
 
     try {
-      const results = await fetchAdvancedUsers({ username, location, minRepos, page: 1 });
+      let results = [];
+
+      // Use basic fetchUserData if only username is provided
+      if (username && !location && !minRepos) {
+        const user = await fetchUserData(username);
+        results = [user];
+      } else {
+        results = await fetchAdvancedUsers({ username, location, minRepos, page: 1 });
+      }
+
       setUsers(results);
-      setHasMore(results.length === 10); // simple check for next page
+      setHasMore(results.length === 10);
     } catch {
       setError(true);
     } finally {
@@ -46,10 +55,7 @@ const Search = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded p-4 flex flex-col gap-4"
-      >
+      <form onSubmit={handleSubmit} className="bg-white shadow-md rounded p-4 flex flex-col gap-4">
         <input
           type="text"
           placeholder="Username"
@@ -71,10 +77,7 @@ const Search = () => {
           onChange={(e) => setMinRepos(e.target.value)}
           className="border p-2 rounded"
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
           Search
         </button>
       </form>
@@ -84,18 +87,10 @@ const Search = () => {
 
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         {users.map((user) => (
-          <div
-            key={user.login}
-            className="border p-4 rounded shadow flex flex-col items-center"
-          >
-            <img src={user.avatar_url} alt={user.login} className="w-24 h-24 rounded-full" />
-            <h3 className="mt-2 font-bold">{user.login}</h3>
-            <a
-              href={user.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 mt-1"
-            >
+          <div key={user.login} className="border p-4 rounded shadow flex flex-col items-center" data-testid="user-card">
+            <img src={user.avatar_url} alt={user.login} className="w-24 h-24 rounded-full" data-testid="avatar" />
+            <h3 className="mt-2 font-bold">{user.name || user.login}</h3>
+            <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500 mt-1">
               View Profile
             </a>
           </div>
@@ -103,10 +98,7 @@ const Search = () => {
       </div>
 
       {hasMore && !loading && (
-        <button
-          onClick={loadMore}
-          className="mt-4 bg-green-500 text-white p-2 rounded hover:bg-green-600"
-        >
+        <button onClick={loadMore} className="mt-4 bg-green-500 text-white p-2 rounded hover:bg-green-600">
           Load More
         </button>
       )}
