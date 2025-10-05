@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const AddRecipeForm = () => {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const [steps, setSteps] = useState(""); // changed from instructions
   const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
@@ -13,9 +13,9 @@ const AddRecipeForm = () => {
     const newErrors = {};
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
-    if (!instructions.trim()) newErrors.instructions = "Instructions are required";
+    if (!steps.trim()) newErrors.steps = "Steps are required";
 
-    // Optional: Ensure at least 2 ingredients
+    // Ensure at least 2 ingredients
     const ingredientItems = ingredients.split(",").map((i) => i.trim()).filter(Boolean);
     if (ingredientItems.length < 2) newErrors.ingredients = "Enter at least 2 ingredients, separated by commas";
 
@@ -24,11 +24,11 @@ const AddRecipeForm = () => {
       return;
     }
 
-    // Here you would normally send data to backend or update state
+    // Prepare new recipe object
     const newRecipe = {
       title,
       ingredients: ingredientItems,
-      instructions: instructions.split(".").map((s) => s.trim()).filter(Boolean),
+      steps: steps.split(".").map((s) => s.trim()).filter(Boolean), // split into steps
     };
 
     console.log("New Recipe Submitted:", newRecipe);
@@ -36,7 +36,7 @@ const AddRecipeForm = () => {
     // Reset form
     setTitle("");
     setIngredients("");
-    setInstructions("");
+    setSteps("");
     setErrors({});
     alert("Recipe added successfully!");
   };
@@ -83,21 +83,21 @@ const AddRecipeForm = () => {
           )}
         </div>
 
-        {/* Instructions */}
+        {/* Steps */}
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">
             Preparation Steps (period separated)
           </label>
           <textarea
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
+            value={steps}
+            onChange={(e) => setSteps(e.target.value)}
             className={`w-full p-2 border rounded h-24 ${
-              errors.instructions ? "border-red-500" : "border-gray-300"
+              errors.steps ? "border-red-500" : "border-gray-300"
             }`}
             placeholder="e.g., Boil spaghetti. Fry pancetta. Mix eggs and cheese."
           />
-          {errors.instructions && (
-            <p className="text-red-500 text-sm mt-1">{errors.instructions}</p>
+          {errors.steps && (
+            <p className="text-red-500 text-sm mt-1">{errors.steps}</p>
           )}
         </div>
 
