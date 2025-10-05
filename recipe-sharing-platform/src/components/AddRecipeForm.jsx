@@ -3,32 +3,47 @@ import React, { useState } from "react";
 const AddRecipeForm = () => {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState(""); // changed from instructions
+  const [steps, setSteps] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validation
+  // ✅ Validation function
+  const validate = () => {
     const newErrors = {};
+
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim()) newErrors.ingredients = "Ingredients are required";
     if (!steps.trim()) newErrors.steps = "Steps are required";
 
-    // Ensure at least 2 ingredients
-    const ingredientItems = ingredients.split(",").map((i) => i.trim()).filter(Boolean);
-    if (ingredientItems.length < 2) newErrors.ingredients = "Enter at least 2 ingredients, separated by commas";
+    const ingredientItems = ingredients
+      .split(",")
+      .map((i) => i.trim())
+      .filter(Boolean);
+    if (ingredientItems.length < 2)
+      newErrors.ingredients =
+        "Enter at least 2 ingredients, separated by commas";
 
+    return newErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const newErrors = validate(); // call validate
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // Prepare new recipe object
     const newRecipe = {
       title,
-      ingredients: ingredientItems,
-      steps: steps.split(".").map((s) => s.trim()).filter(Boolean), // split into steps
+      ingredients: ingredients
+        .split(",")
+        .map((i) => i.trim())
+        .filter(Boolean),
+      steps: steps
+        .split(".")
+        .map((s) => s.trim())
+        .filter(Boolean),
     };
 
     console.log("New Recipe Submitted:", newRecipe);
@@ -62,7 +77,9 @@ const AddRecipeForm = () => {
             }`}
             placeholder="Enter recipe title"
           />
-          {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+          {errors.title && (
+            <p className="text-red-500 text-sm mt-1">{errors.title}</p>
+          )}
         </div>
 
         {/* Ingredients */}
