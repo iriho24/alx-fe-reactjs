@@ -1,1 +1,2 @@
-# alx-fe-reactjs
+## Recipe Sharing Platform
+React project with Tailwind CSS setup
