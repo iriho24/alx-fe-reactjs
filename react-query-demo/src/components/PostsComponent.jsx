@@ -10,6 +10,10 @@ export default function PostsComponent() {
   const { data, error, isLoading, isError, refetch, isFetching } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
+    cacheTime: 1000 * 60 * 5,          // 5 minutes cache
+    staleTime: 1000 * 60,              // 1 minute stale
+    refetchOnWindowFocus: true,        // auto refetch when window gains focus
+    keepPreviousData: true             // keep old data while fetching new
   });
 
   if (isLoading) return <p>Loading posts...</p>;
